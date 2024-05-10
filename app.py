@@ -8,7 +8,7 @@ from resources.user import UserRegister
 from models.user import UserModel
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
-from db import db
+
 
 
 output_file = open('C:/Users/stace/Development/API 2024/Section5/code/firsttextfile.txt', 'w')
@@ -17,12 +17,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["JWT_SECRET_KEY"] = 'jose'
  
-@app.before_first_request
-def create_tables():
-    db.create_all()
     
-    
-db.init_app(app)
+
 #app.secret_key = 'jose'
 
 api = Api(app)
