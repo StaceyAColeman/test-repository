@@ -33,7 +33,7 @@ args = parser
 #jwt = JWTManager(app, authenticate, identity) #Endpoint http://127.0.0.1:5000/auth
 jwt = JWTManager(app, add_context_processor=True )
 
-print("jwt =", jwt)
+#print("jwt =", jwt)
 #@app.route("/auth")
 
 class Auth(Resource):
@@ -73,4 +73,15 @@ api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
 
-app.run(port=5000, debug=True)
+#app.run(port=5000, debug=True)
+''' Code added 5/15/24 '''
+if __name__ == '__main__':
+    from db import db
+    db.init_app(app)
+
+    if app.config['DEBUG']:
+        @app.before_first_request
+        def create_tables():
+            db.create_all()
+
+    app.run(port=5000)
