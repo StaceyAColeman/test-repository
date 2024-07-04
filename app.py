@@ -1,4 +1,5 @@
-from werkzeug.security import safe_str_cmp
+#from werkzeug.security import safe_str_cmp
+import hmac
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
@@ -8,6 +9,7 @@ from resources.user import UserRegister
 from models.user import UserModel
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from resources.utils import ApiTraining
 
 
 
@@ -64,8 +66,27 @@ class Auth(Resource):
             return jsonify(access_token=access_token)
         return jsonify({"msg": "Bad username or password"}), 401
         # data = request.get_json(force=True) or getjson(silent=True)
+        
+    def safe_str_cmp(a: str, b: str) -> bool:
+     """This function compares strings in somewhat constant time. This
+      requires that the length of at least one string is known in advance.
 
-    
+       Returns `True` if the two strings are equal, or `False` if they are not.
+      """
+
+     if isinstance(a, str):
+        a = a.encode("utf-8")  # type: ignore
+     if isinstance(b, str):
+        b = b.encode("utf-8")  # type: ignore
+
+     return hmac.compare_digest(a, b)
+
+
+    def main():
+       ApiTraining()
+       
+    if __name__ == "__main__":
+           main()
 
 api.add_resource(Store, '/store/<string:name>')
 api.add_resource(Item, '/items/<string:name>')     # http://127.0.0.1:5000/student/Rolf
