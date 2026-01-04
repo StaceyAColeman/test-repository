@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Tue Dec 30 14:54:21 2025
 
-
+@author: stace
+"""
 from db import db
-
-
+        
 class ItemModel(db.Model):
     __tablename__ = 'items'
     
@@ -16,7 +18,7 @@ class ItemModel(db.Model):
     
     def __init__(self, name, price, store_id):
         self.name = name
-        self.price = price
+        self.price= price
         self.store_id = store_id
         
     def json(self):
@@ -24,17 +26,13 @@ class ItemModel(db.Model):
     
     @classmethod
     def find_by_name(cls, name):
-        return cls.query.filter_by(name=name).first()   # SELECT * FROM items WHERE name=name
-        
-#        return {'message': "Item not found"}, 404
-        return None
-    
+      return cls.query.filter_by(name=name).first()  # SELECT * FROM items WHERE name=name LIMIT 1
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-  
-    
+       
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-    
+        
